@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- DevPulse design tokens ---- */
+  /* Deep teal-black "monitor screen" base, not pure black/navy */
+  --color-ink-950: #081312;
+  --color-ink-900: #0d1c1a;
+  --color-ink-800: #142a27;
+  --color-ink-700: #1c3733;
+  --color-ink-600: #2a4a45;
+
+  --color-mist-100: #eef6f3;
+  --color-mist-300: #b9cbc6;
+  --color-mist-500: #7f9995;
+
+  /* Pulse = the heartbeat / score / primary action color */
+  --color-pulse-400: #ff7d6e;
+  --color-pulse-500: #ff5c4d;
+  --color-pulse-600: #e8422f;
+
+  /* Signal = achievements / gold */
+  --color-signal-400: #f7c669;
+  --color-signal-500: #f0b03f;
+
+  /* Rank = leaderboard / secondary data */
+  --color-rank-400: #9ba8ff;
+  --color-rank-500: #7c8bff;
+
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink-950);
+  color: var(--color-mist-100);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-pulse-500);
+  color: var(--color-ink-950);
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-ink-600 bg-ink-900 px-3.5 py-2.5 text-sm text-mist-100 outline-none transition placeholder:text-mist-500 focus:border-pulse-500/60 focus:ring-2 focus:ring-pulse-500/20;
+  }
+}
+
+/* Thin, quiet scrollbars so they don't fight the monitor-panel aesthetic */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-600) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-ink-600);
+  border-radius: 999px;
+}
+
+/* The one orchestrated motion: a continuously drawing ECG line used in the
+   sidebar mark and the auth screen. Everything else in the UI is static. */
+@keyframes pulse-draw {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.pulse-line {
+  stroke-dasharray: 240;
+  animation: pulse-draw 2.4s linear infinite;
+}
+
+@keyframes soft-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.glow-dot {
+  animation: soft-glow 2s ease-in-out infinite;
+}
